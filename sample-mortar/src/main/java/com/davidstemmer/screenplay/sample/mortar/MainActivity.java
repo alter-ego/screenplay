@@ -1,5 +1,11 @@
 package com.davidstemmer.screenplay.sample.mortar;
 
+import com.davidstemmer.screenplay.SimpleActivityDirector;
+import com.davidstemmer.screenplay.flow.Screenplay;
+import com.davidstemmer.screenplay.sample.mortar.module.ApplicationComponent;
+import com.davidstemmer.screenplay.sample.mortar.presenter.DrawerPresenter;
+import com.davidstemmer.screenplay.sample.mortar.presenter.NavigationMenuPresenter;
+
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -8,67 +14,64 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.davidstemmer.screenplay.SimpleActivityDirector;
-import com.davidstemmer.screenplay.flow.Screenplay;
-import com.davidstemmer.screenplay.sample.mortar.module.ApplicationComponent;
-import com.davidstemmer.screenplay.sample.mortar.presenter.DrawerPresenter;
-import com.davidstemmer.screenplay.sample.mortar.presenter.NavigationMenuPresenter;
-
 import butterknife.ButterKnife;
+import butterknife.InjectView;
 import flow.Flow;
 
 public class MainActivity extends ActionBarActivity {
 
-    private DrawerLayout navigationDrawer;
+    @InjectView(R.id.drawer_parent)
+    DrawerLayout mNavigationDrawer;
 
-    private Flow flow;
-    private Screenplay screenplay;
-    private DrawerPresenter drawerPresenter;
-    private SimpleActivityDirector director;
+    @InjectView(R.id.main)
+    ViewGroup mMain;
+
+    private Flow mFlow;
+
+    private DrawerPresenter mDrawerPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-
 
         ApplicationComponent component = MainApplication.getComponent();
         // TODO move some of this logic to its own class
-        flow = component.flow();
-        screenplay = component.screenplay();
-        drawerPresenter = component.drawerPresenter();
-        director = component.director();
+        mFlow = component.flow();
+        mDrawerPresenter = component.drawerPresenter();
 
         NavigationMenuPresenter navigationPresenter = component.menuPresenter();
 
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this, this);
 
-        navigationDrawer = (DrawerLayout) findViewById(R.id.drawer_parent);
-
-        View navigationMenu = getLayoutInflater().inflate(R.layout.navigation_menu, navigationDrawer, false);
+        View navigationMenu = getLayoutInflater().inflate(R.layout.navigation_menu, mNavigationDrawer, false);
         navigationMenu.addOnAttachStateChangeListener(navigationPresenter);
-        navigationDrawer.addView(navigationMenu);
+        mNavigationDrawer.addView(navigationMenu);
 
-        director.bind(this, (ViewGroup) findViewById(R.id.main));
-        drawerPresenter.onViewAttachedToWindow(navigationDrawer);
-        screenplay.enter(flow);
+        SimpleActivityDirector director = component.director();
+        director.bind(this, mMain);
+
+        mDrawerPresenter.onViewAttachedToWindow(mNavigationDrawer);
+
+        Screenplay screenplay = component.screenplay();
+        screenplay.enter(mFlow);
     }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        drawerPresenter.syncToggleState();
+        mDrawerPresenter.syncToggleState();
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        drawerPresenter.onConfigurationChanged(newConfig);
+        mDrawerPresenter.onConfigurationChanged(newConfig);
     }
 
-    @Override public void onBackPressed() {
-        if (!flow.goBack()) {
+    @Override
+    public void onBackPressed() {
+        if (!mFlow.goBack()) {
             super.onBackPressed();
         }
     }
@@ -77,11 +80,10 @@ public class MainActivity extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == android.R.id.home) {
-            if (drawerPresenter.isLockedOpen() || drawerPresenter.isLockedShut()) {
-               return true;
-            }
-            else if (drawerPresenter.onOptionsItemSelected(item)) {
-               return true;
+            if (mDrawerPresenter.isLockedOpen() || mDrawerPresenter.isLockedShut()) {
+                return true;
+            } else if (mDrawerPresenter.onOptionsItemSelected(item)) {
+                return true;
             }
         }
         return super.onOptionsItemSelected(item);
@@ -90,6 +92,6 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        drawerPresenter.onViewDetachedFromWindow(navigationDrawer);
+        mDrawerPresenter.onViewDetachedFromWindow(mNavigationDrawer);
     }
 }
