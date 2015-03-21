@@ -10,12 +10,14 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.Optional;
 import flow.Flow;
 
 public class MainActivity extends ActionBarActivity {
@@ -25,6 +27,9 @@ public class MainActivity extends ActionBarActivity {
 
     @InjectView(R.id.main)
     ViewGroup mMain;
+
+    @InjectView(R.id.toolbar)
+    Toolbar mToolbar;
 
     private Flow mFlow;
 
@@ -43,6 +48,8 @@ public class MainActivity extends ActionBarActivity {
 
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this, this);
+
+        setSupportActionBar(mToolbar);
 
         View navigationMenu = getLayoutInflater().inflate(R.layout.navigation_menu, mNavigationDrawer, false);
         navigationMenu.addOnAttachStateChangeListener(navigationPresenter);

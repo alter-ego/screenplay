@@ -6,4 +6,23 @@
 
     <color name="navigation_drawer_text_color_unselected">#2f2f2f</color>
     <color name="navigation_drawer_text_color_selected">#FCFCFC</color>
+
+    <color name="primaryColor">@android:color/holo_blue_light</color>
+    <color name="primaryDarkColor">#1761A0</color>
+    <color name="primatyLightColor">#f5f5f5</color>
+    <color name="accentColor">#ff0000</color>
+
+    <color name="drawerBackground">#ffffff</color>
+    <color name="myWindowBackground">#DEDEDE</color>
+    <color name="textPrimaryColor">#000000</color>
+    <color name="textSecondaryColor">#ffffff</color>
+    <color name="myNavigationColor">#000000</color>
+
+    <color name="selected_gray">#ffdbdbdb</color>
+
+
+    <color name="list_background_normal">#FCFCFC</color>
+    <color name="list_background_secondary_normal">#F2F2F2</color>
+    <color name="black">#000000</color>
+    <color name="white">#ffffff</color>
 </resources>

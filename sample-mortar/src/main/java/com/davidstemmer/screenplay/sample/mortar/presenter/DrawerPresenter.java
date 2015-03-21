@@ -1,5 +1,8 @@
 package com.davidstemmer.screenplay.sample.mortar.presenter;
 
+import com.davidstemmer.screenplay.SimpleActivityDirector;
+import com.davidstemmer.screenplay.sample.mortar.R;
+
 import android.content.res.Configuration;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -8,9 +11,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
-
-import com.davidstemmer.screenplay.SimpleActivityDirector;
-import com.davidstemmer.screenplay.sample.mortar.R;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -35,7 +35,7 @@ public class DrawerPresenter extends ViewPresenter<DrawerLayout> {
         drawerToggle = createDrawerToggle(target);
         target.setDrawerListener(drawerToggle);
 
-        ActionBar actionBar = ((ActionBarActivity)director.getActivity()).getSupportActionBar();
+        ActionBar actionBar = ((ActionBarActivity) director.getActivity()).getSupportActionBar();
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
     }
