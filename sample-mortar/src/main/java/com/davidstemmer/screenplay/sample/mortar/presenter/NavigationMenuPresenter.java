@@ -1,15 +1,15 @@
 package com.davidstemmer.screenplay.sample.mortar.presenter;
 
-import android.os.Handler;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-
 import com.davidstemmer.screenplay.sample.mortar.R;
 import com.davidstemmer.screenplay.sample.mortar.scene.PagedScene1;
 import com.davidstemmer.screenplay.sample.mortar.scene.StackedScene;
 import com.davidstemmer.screenplay.sample.mortar.scene.WelcomeScene;
 import com.davidstemmer.screenplay.scene.Scene;
+
+import android.os.Handler;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -24,19 +24,25 @@ import flow.Flow;
 public class NavigationMenuPresenter extends ViewPresenter<ViewGroup> {
 
     private final DrawerPresenter drawer;
+
     private final Flow flow;
+
     private final WelcomeScene welcomeScene;
+
     private final PagedScene1 pagedScene;
+
     private final StackedScene stackedScene;
+
+    private final Handler mDrawerHandler = new Handler();
 
     private int selected = R.id.nav_item_simple_scene;
 
     @Inject
     public NavigationMenuPresenter(DrawerPresenter drawerPresenter,
-                                   Flow flow,
-                                   WelcomeScene welcomeScene,
-                                   PagedScene1 pagedScene,
-                                   StackedScene stackedScene) {
+            Flow flow,
+            WelcomeScene welcomeScene,
+            PagedScene1 pagedScene,
+            StackedScene stackedScene) {
 
         this.drawer = drawerPresenter;
         this.flow = flow;
@@ -87,7 +93,6 @@ public class NavigationMenuPresenter extends ViewPresenter<ViewGroup> {
         setSelected(selected);
     }
 
-    private final Handler mDrawerHandler = new Handler();
     private void showNextSceneAfterDelay(final Scene nextScene) {
         // Clears any previously posted runnables, for double clicks
         mDrawerHandler.removeCallbacksAndMessages(null);
