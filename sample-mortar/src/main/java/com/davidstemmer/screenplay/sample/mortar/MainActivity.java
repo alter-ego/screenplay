@@ -17,7 +17,6 @@ import android.view.ViewGroup;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import butterknife.Optional;
 import flow.Flow;
 
 public class MainActivity extends ActionBarActivity {
